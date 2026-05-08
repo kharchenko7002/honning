@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
 // Navigation items — kept in one array so desktop and mobile share the same source.
@@ -19,20 +19,52 @@ export default function Header() {
     setOpen(false);
   }, [location.pathname]);
 
-  // Active vs idle classes used by NavLink
-  const linkClass = ({ isActive }) =>
+  // Close on Escape + lock body scroll while the mobile menu is open.
+  useEffect(() => {
+    if (!open) return;
+
+    const handleKey = (event) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKey);
+
+    return () => {
+      window.removeEventListener('keydown', handleKey);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
+  // Desktop link: subtle bottom underline on the active page (instead of a heavy fill).
+  const desktopLinkClass = ({ isActive }) =>
     [
-      'rounded-xl px-3 py-2 text-sm font-medium transition',
+      'relative rounded-xl px-3 py-2 text-sm font-medium transition',
+      'after:absolute after:left-3 after:right-3 after:-bottom-0.5 after:h-0.5 after:rounded-full after:transition-all',
       isActive
-        ? 'bg-honey-500 text-wax-900'
-        : 'text-wax-800 hover:bg-cream-100 hover:text-wax-900',
+        ? 'text-wax-900 after:bg-honey-500'
+        : 'text-wax-800 hover:text-wax-900 hover:bg-cream-100 after:bg-transparent',
+    ].join(' ');
+
+  // Mobile link: clear left accent bar on the active page so it's obvious in the dropdown.
+  const mobileLinkClass = ({ isActive }) =>
+    [
+      'block rounded-xl px-3 py-3 text-base font-medium transition border-l-4',
+      isActive
+        ? 'border-honey-500 bg-cream-100 text-wax-900'
+        : 'border-transparent text-wax-800 hover:bg-cream-100 hover:text-wax-900',
     ].join(' ');
 
   return (
     <header className="sticky top-0 z-40 border-b border-cream-100 bg-cream-50/95 backdrop-blur">
       <div className="container-page flex h-16 items-center justify-between">
         {/* Brand / logo */}
-        <NavLink to="/" className="flex items-center gap-2" aria-label="Solhaug Honninggård — gå til forsiden">
+        <NavLink
+          to="/"
+          className="flex items-center gap-2"
+          aria-label="Solhaug Honninggård — gå til forsiden"
+        >
           <span aria-hidden="true" className="text-2xl">🍯</span>
           <span className="font-serif text-lg font-bold text-wax-900 sm:text-xl">
             Solhaug Honninggård
@@ -44,7 +76,7 @@ export default function Header() {
           <ul className="flex items-center gap-1">
             {navLinks.map((link) => (
               <li key={link.to}>
-                <NavLink to={link.to} end={link.end} className={linkClass}>
+                <NavLink to={link.to} end={link.end} className={desktopLinkClass}>
                   {link.label}
                 </NavLink>
               </li>
@@ -90,28 +122,36 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Mobile dropdown */}
+      {/* Mobile dropdown + backdrop. Backdrop click closes the menu. */}
       {open && (
-        <nav
-          id="mobile-menu"
-          aria-label="Mobilmeny"
-          className="border-t border-cream-100 bg-cream-50 md:hidden"
-        >
-          <ul className="container-page flex flex-col gap-1 py-3">
-            {navLinks.map((link) => (
-              <li key={link.to}>
-                <NavLink
-                  to={link.to}
-                  end={link.end}
-                  className={linkClass}
-                  onClick={() => setOpen(false)}
-                >
-                  {link.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <>
+          <button
+            type="button"
+            aria-label="Lukk meny"
+            className="fixed inset-0 top-16 z-30 cursor-default bg-wax-900/30 md:hidden"
+            onClick={() => setOpen(false)}
+          />
+          <nav
+            id="mobile-menu"
+            aria-label="Mobilmeny"
+            className="relative z-40 border-t border-cream-100 bg-cream-50 shadow-lg md:hidden"
+          >
+            <ul className="container-page flex flex-col gap-1 py-3">
+              {navLinks.map((link) => (
+                <li key={link.to}>
+                  <NavLink
+                    to={link.to}
+                    end={link.end}
+                    className={mobileLinkClass}
+                    onClick={() => setOpen(false)}
+                  >
+                    {link.label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </>
       )}
     </header>
   );

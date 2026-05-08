@@ -14,8 +14,17 @@ export default function Layout() {
 
   return (
     <div className="flex min-h-screen flex-col bg-cream-50">
+      {/* Skip link — visible only when focused, lets keyboard users jump past the nav. */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50
+                   focus:rounded-xl focus:bg-honey-500 focus:px-4 focus:py-2 focus:font-medium
+                   focus:text-wax-900 focus:shadow-md"
+      >
+        Hopp til innhold
+      </a>
       <Header />
-      <main id="main" className="flex-1">
+      <main id="main" tabIndex="-1" className="flex-1">
         <Outlet />
       </main>
       <Footer />
