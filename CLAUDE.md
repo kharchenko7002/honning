@@ -289,3 +289,5 @@ Prosjektet skal være lett å bruke til:
 - Refleksjon over forbedringer
 
 Derfor skal hver synlige funksjon kunne beskrives som en klar brukerhandling (f.eks. *"Som besøkende vil jeg se alle honningsorter slik at jeg kan velge en jeg liker"*).
+
+Hele leveransedokumentet — user stories, aktører, use case-diagram, funksjonelle krav, læringsmål og KI-logg — ligger samlet i [PRODUKTDOKUMENTASJON.md](PRODUKTDOKUMENTASJON.md). Når nye Fase 2-forbedringer legges til, skal tilhørende user story / use case / commit-referanse også oppdateres der.
