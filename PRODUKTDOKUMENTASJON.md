@@ -236,34 +236,39 @@ flowchart LR
 
 Jeg har valgt **3 use case** å fokusere på i kodefasen:
 
-### 1. Bestille honning *(høyest prioritet)*
+### 1. Bestille honning ✅ *ferdig*
 
 - **Hvorfor:** Dette er den «forretningsmessige» kjernen i siden. Hvis
-  bestilling ikke føles enkel, har siden mistet hele poenget. Halve flyten er
-  allerede på plass (kontaktskjemaet kan ta imot et produktnavn via
-  `location.state.produkt`), men «Bestill nå»-knappen på selve produktkortet
-  må kobles ferdig.
+  bestilling ikke føles enkel, har siden mistet hele poenget.
 - **Tilhørende user stories:** US1, US2.
-- **Faktisk arbeid:** legge inn `useNavigate` på `HoneyCard`, sende
-  produktnavn videre til `/kontakt`, og sørge for at meldingen prefiller riktig.
+- **Resultat:** Hele flyten er på plass — `HoneyCard` bruker `useNavigate`
+  med `state: { produkt }`, og `ContactForm` plukker det opp og forhåndsfyller
+  meldingen («Hei! Jeg vil gjerne bestille X. »). I tillegg har kjøp-knappen
+  nå en `aria-label` som sier hvilken honning som bestilles, så skjermlesere
+  ikke leser «Bestill nå» seks ganger på rad.
 
-### 2. Validere kontaktskjema
+### 2. Validere kontaktskjema ✅ *ferdig*
 
 - **Hvorfor:** Uten god validering blir siden frustrerende, og forespørsler
   går tapt. Dette er et tydelig case som dekker både feil, dataintegritet og
   tilgjengelighet (ARIA-koblinger).
 - **Tilhørende user stories:** US6, US7.
-- **Faktisk arbeid:** allerede i hovedsak gjort i Fase 2 (blur-validering,
-  tegnteller, min/max-lengder, lagring av utkast). Videre arbeid: en enkel
-  honeypot-felle mot bot-spam.
+- **Resultat:** Blur-validering, min/max-lengder, levende tegnteller, lagring
+  av utkast i localStorage, «Skriv ny melding»-knapp etter sending — og en
+  honeypot-felle mot bot-spam (skjult felt som bare bots fyller ut, og
+  innsendinger med fylt honeypot droppes stille).
 
-### 3. Hoppe til hovedinnhold / WCAG-tilgjengelighet
+### 3. WCAG-tilgjengelighet ✅ *ferdig (første runde)*
 
 - **Hvorfor:** Tilgjengelighet er ofte glemt i skoleprosjekter, og det er en
   konkret måte å vise omsorg for «brukere med spesielt behov».
 - **Tilhørende user stories:** US5.
-- **Faktisk arbeid:** «Hopp til innhold»-lenke er på plass. Videre: gå
-  systematisk gjennom kontrast, alt-tekster, semantiske tagger og fokushåndtering.
+- **Resultat:** «Hopp til innhold»-lenke, fokus-ring globalt via
+  `:focus-visible`, kontrast løftet til AA (mange `text-honey-700` byttet til
+  `text-honey-900` for bedre lesbarhet), eksplisitt `width`/`height` på
+  bilder for å forhindre layout shift, og aktiv side markeres nå også i
+  footer-navigasjonen. Videre runder kan se på automatiske axe-tester og
+  bedre skjermleser-stier.
 
 ---
 
@@ -315,30 +320,34 @@ Jeg har delt arbeidet i to faser:
 - Kontaktside med skjema
 - Norsk README
 
-### Fase 2 — Skoleforbedringer (under arbeid)
+### Fase 2 — Skoleforbedringer (ferdig)
 
 | # | Forbedring | Commit | User story |
 |---|---|---|---|
 | 1 | Mobilmeny + aktiv navigasjon: Escape lukker, klikk utenfor lukker, body-scroll låst, mer elegant aktiv-stil, «Hopp til innhold»-lenke. | `d14f5f6 feat(nav): improve mobile menu and active link styling` | US4, US5 |
 | 2 | Kontaktskjema: blur-validering, min/max-lengder, levende tegnteller, lagring av utkast i localStorage, «Skriv ny melding»-knapp etter sending. | `df53204 feat(kontakt): blur-validering, tegnteller, utkast i localStorage` | US6, US7 |
+| 3 | WCAG AA-kontrast: alle eyebrow-tekster og lenker byttet fra `text-honey-700` til `text-honey-900` (kontrast 9:1). Eksplisitt width/height på bilder. Tydeligere `aria-label` på «Bestill nå»-knappen. Aktiv side markeres også i footer. | `e4eb765 feat(a11y): WCAG AA-kontrast, bildedimensjoner, tydeligere ARIA-etiketter` | US5 |
+| 4 | Honeypot mot bot-spam: skjult «Nettside»-felt som bare bots fyller ut. Innsendinger med fylt honeypot droppes stille uten å åpne e-postklienten. | `7d6af1c feat(kontakt): legg til honeypot mot bot-spam` | US7 |
 
-Planlagte neste steg:
-
-- Fullføre **Bestille honning**: «Bestill nå»-knapp på `HoneyCard` med
-  `useNavigate` + state, slik at kontaktskjemaets prefill-flyt brukes ende-til-ende. (US2)
-- **Tilgjengelighetsgjennomgang**: kontrast, alt-tekster, semantiske tagger,
-  fokushåndtering på alle sider. (US5)
+> **Bestille honning** (US1, US2) er fullført gjennom samspillet mellom
+> commit `df53204` (mottak av prefill i `ContactForm`) og commit `e4eb765`
+> (tydeligere ARIA-etikett på `HoneyCard`-knappen). `useNavigate` med
+> `location.state` lå allerede inne i Fase 1.
 
 ### Refleksjonsnotat (kort)
 
 - **Hva appen gjør:** presenterer Solhaug Honninggård og lar besøkende sende
-  en forespørsel via kontaktskjema som åpner deres e-postklient.
+  en forespørsel — eller legge inn en bestilling for en bestemt honningsort —
+  via kontaktskjema som åpner deres e-postklient.
 - **Hva jeg har forbedret:** mobilmenyen er nå robust og tilgjengelig,
-  kontaktskjemaet gir tydelig tilbakemelding mens man skriver, og innholdet
-  går ikke tapt hvis man lukker fanen.
+  kontaktskjemaet gir tydelig tilbakemelding mens man skriver, innholdet går
+  ikke tapt hvis man lukker fanen, kontrasten oppfyller WCAG AA, og en enkel
+  honeypot holder de mest naive bot-spammene unna.
 - **Hva jeg har lært:** at planlegging med user stories gjør at hver kodeendring
   har et klart mål — og at små UX-detaljer (utkastlagring, fokusringer,
-  Escape-tast) oppleves som «omsorg» av brukeren selv om de er enkle å lage.
+  Escape-tast, eksplisitte bildedimensjoner) oppleves som «omsorg» av brukeren
+  selv om de er enkle å lage. Jeg har også lært at tilgjengelighet ikke trenger
+  å være vanskelig: 9 av 10 forbedringer er små klasse- eller attributt-endringer.
 
 ---
 
@@ -380,6 +389,32 @@ Enkel logg over hvor jeg har brukt KI (Claude Code) som samarbeidspartner.
   men at man bør pakke alt i try/catch fordi nettleseren kan kaste feil
   (privatmodus, full lagring), og at det er viktig å rydde opp etter
   vellykket innsending.
+
+### Spørsmål 4 — Tilgjengelighet og kontrast
+
+- **Spurte om:** «Hvilke konkrete grep kan jeg ta for å oppfylle WCAG AA på
+  denne siden uten å bytte hele fargepaletten?»
+- **Fikk hjelp til:** å regne ut faktisk kontrastforhold for de mest brukte
+  fargekombinasjonene (`text-honey-700` på hvit ga 3.7:1 — fail for liten
+  tekst). Byttet systematisk til `text-honey-900` for å nå ~9:1, og la til
+  `width`/`height` på alle bildene for å unngå layout shift på treg forbindelse.
+- **Lærte:** at AA-kravet er annerledes for «large bold» (≥18pt fet) tekst
+  enn for vanlig brødtekst — og at små attributt-endringer (`width`/`height`,
+  `aria-label`, `tabIndex`) ofte gir større tilgjengelighetsgevinst enn store
+  refaktoreringer.
+
+### Spørsmål 5 — Honeypot mot bot-spam
+
+- **Spurte om:** «Hvordan kan jeg holde bots unna kontaktskjemaet uten en
+  CAPTCHA og uten en backend?»
+- **Fikk hjelp til:** å sette inn et skjult «Nettside»-felt (honeypot) som er
+  flyttet utenfor synsfeltet med `left: -9999px`, har `aria-hidden="true"`,
+  `tabIndex={-1}` og `autoComplete="off"`. Hvis feltet er fylt ut ved
+  innsending, later vi som om alt gikk bra — men åpner ikke e-postklienten.
+- **Lærte:** at honeypot er den enkleste anti-spam-mekanismen man kan ha,
+  men at det krever omhu for at ekte brukere (særlig de som bruker
+  skjermlesere) ikke blir lurt med — derfor `aria-hidden`, `tabIndex={-1}` og
+  en forklarende `label` om at feltet skal stå tomt.
 
 ### Hvordan jeg passet på å forstå koden
 
