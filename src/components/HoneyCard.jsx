@@ -18,6 +18,8 @@ export default function HoneyCard({ honey }) {
         src={bilde}
         alt={`Krukke med ${navn.toLowerCase()}`}
         loading="lazy"
+        width="800"
+        height="600"
         className="aspect-[4/3] w-full object-cover"
       />
 
@@ -34,12 +36,13 @@ export default function HoneyCard({ honey }) {
         <p className="mt-2 flex-1 text-sm text-wax-800">{beskrivelse}</p>
 
         <div className="mt-5 flex items-center justify-between">
-          <span className="font-serif text-lg font-bold text-honey-700">
+          <span className="font-serif text-lg font-bold text-honey-900">
             {pris} kr
           </span>
           <button
             type="button"
             onClick={handleOrder}
+            aria-label={`Bestill ${navn} — gå til kontaktskjema`}
             className="btn-primary px-4 py-2 text-sm"
           >
             Bestill nå

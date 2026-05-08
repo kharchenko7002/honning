@@ -5,7 +5,7 @@ export default function Kontakt() {
   return (
     <section className="container-page py-12 md:py-16">
       <header className="max-w-prose">
-        <p className="text-sm font-medium uppercase tracking-wide text-honey-700">
+        <p className="text-sm font-medium uppercase tracking-wide text-honey-900">
           Kontakt
         </p>
         <h1 className="mt-2 font-serif text-4xl font-bold text-wax-900 sm:text-5xl">
@@ -32,13 +32,13 @@ export default function Kontakt() {
             <ul className="mt-3 space-y-2 text-sm text-wax-800">
               <li>
                 <span className="font-medium">E-post: </span>
-                <a href="mailto:post@solhaug-honning.no" className="text-honey-700 hover:underline">
+                <a href="mailto:post@solhaug-honning.no" className="text-honey-900 hover:underline">
                   post@solhaug-honning.no
                 </a>
               </li>
               <li>
                 <span className="font-medium">Telefon: </span>
-                <a href="tel:+4790000000" className="text-honey-700 hover:underline">
+                <a href="tel:+4790000000" className="text-honey-900 hover:underline">
                   +47 900 00 000
                 </a>
               </li>

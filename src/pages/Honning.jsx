@@ -6,7 +6,7 @@ export default function Honning() {
   return (
     <section className="container-page py-12 md:py-16">
       <header className="max-w-prose">
-        <p className="text-sm font-medium uppercase tracking-wide text-honey-700">
+        <p className="text-sm font-medium uppercase tracking-wide text-honey-900">
           Sortimentet vårt
         </p>
         <h1 className="mt-2 font-serif text-4xl font-bold text-wax-900 sm:text-5xl">

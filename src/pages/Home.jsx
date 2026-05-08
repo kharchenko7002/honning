@@ -19,6 +19,8 @@ export default function Home() {
             src="https://images.unsplash.com/photo-1568526381923-caf3fd520382?auto=format&fit=crop&w=1000&q=70"
             alt="Birøkter går mellom bikuber på en blomstereng"
             loading="lazy"
+            width="1000"
+            height="750"
             className="aspect-[4/3] w-full rounded-2xl object-cover shadow-sm"
           />
           <div>

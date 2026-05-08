@@ -4,6 +4,10 @@ import { NavLink } from 'react-router-dom';
 export default function Footer() {
   const year = new Date().getFullYear();
 
+  // Highlight the current page in the footer nav too — small cue, helps orientation.
+  const footerLinkClass = ({ isActive }) =>
+    isActive ? 'font-semibold text-honey-900 underline' : 'hover:text-honey-900';
+
   return (
     <footer className="mt-16 border-t border-cream-100 bg-cream-100 text-wax-900">
       <div className="container-page grid gap-8 py-10 md:grid-cols-3">
@@ -20,11 +24,11 @@ export default function Footer() {
         <nav aria-label="Sider i bunnen">
           <p className="font-medium">Sider</p>
           <ul className="mt-2 space-y-1 text-sm">
-            <li><NavLink to="/" className="hover:text-honey-700">Hjem</NavLink></li>
-            <li><NavLink to="/honning" className="hover:text-honey-700">Honning</NavLink></li>
-            <li><NavLink to="/om-oss" className="hover:text-honey-700">Om oss</NavLink></li>
-            <li><NavLink to="/hvor-finner-du-oss" className="hover:text-honey-700">Hvor finner du oss</NavLink></li>
-            <li><NavLink to="/kontakt" className="hover:text-honey-700">Kontakt</NavLink></li>
+            <li><NavLink to="/" end className={footerLinkClass}>Hjem</NavLink></li>
+            <li><NavLink to="/honning" className={footerLinkClass}>Honning</NavLink></li>
+            <li><NavLink to="/om-oss" className={footerLinkClass}>Om oss</NavLink></li>
+            <li><NavLink to="/hvor-finner-du-oss" className={footerLinkClass}>Hvor finner du oss</NavLink></li>
+            <li><NavLink to="/kontakt" className={footerLinkClass}>Kontakt</NavLink></li>
           </ul>
         </nav>
 
@@ -34,12 +38,12 @@ export default function Footer() {
           <ul className="mt-2 space-y-1 text-sm text-wax-800">
             <li>Solhaugvegen 12, 2670 Innlandet</li>
             <li>
-              <a href="tel:+4790000000" className="hover:text-honey-700">
+              <a href="tel:+4790000000" className="hover:text-honey-900">
                 +47 900 00 000
               </a>
             </li>
             <li>
-              <a href="mailto:post@solhaug-honning.no" className="hover:text-honey-700">
+              <a href="mailto:post@solhaug-honning.no" className="hover:text-honey-900">
                 post@solhaug-honning.no
               </a>
             </li>

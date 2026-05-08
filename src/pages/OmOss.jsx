@@ -29,7 +29,7 @@ export default function OmOss() {
       <section className="container-page py-12 md:py-16">
         <div className="grid items-center gap-10 md:grid-cols-2">
           <div>
-            <p className="text-sm font-medium uppercase tracking-wide text-honey-700">
+            <p className="text-sm font-medium uppercase tracking-wide text-honey-900">
               Om oss
             </p>
             <h1 className="mt-2 font-serif text-4xl font-bold text-wax-900 sm:text-5xl">
@@ -46,6 +46,8 @@ export default function OmOss() {
             src="https://images.unsplash.com/photo-1568526381923-caf3fd520382?auto=format&fit=crop&w=1000&q=70"
             alt="Birøkter inspiserer en bikube i ettermiddagssolen"
             loading="lazy"
+            width="1000"
+            height="750"
             className="aspect-[4/3] w-full rounded-2xl object-cover shadow-sm"
           />
         </div>

@@ -7,11 +7,11 @@ export default function Hero() {
     <section className="bg-cream-50">
       <div className="container-page grid items-center gap-10 py-12 md:grid-cols-2 md:py-20">
         <div>
-          <p className="text-sm font-medium uppercase tracking-wide text-honey-700">
+          <p className="text-sm font-medium uppercase tracking-wide text-honey-900">
             Lokal honning fra Innlandet
           </p>
           <h1 className="mt-3 font-serif text-4xl font-bold leading-tight text-wax-900 sm:text-5xl">
-            Honning rett fra <span className="text-honey-700">gården</span>
+            Honning rett fra <span className="text-honey-900">gården</span>
           </h1>
           <p className="mt-4 max-w-prose text-lg text-wax-800">
             Hos Solhaug Honninggård steller vi bikubene selv og høster kun det
@@ -35,6 +35,8 @@ export default function Hero() {
             src="https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?auto=format&fit=crop&w=1000&q=70"
             alt="Glasskrukke med gyllen honning på et trebord"
             loading="lazy"
+            width="1000"
+            height="750"
             className="aspect-[4/3] w-full rounded-2xl object-cover shadow-lg"
           />
           {/* Decorative badge */}
