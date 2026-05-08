@@ -96,6 +96,8 @@ export default function ContactForm() {
   const [errors, setErrors] = useState(initialErrors);
   const [touched, setTouched] = useState(initialTouched);
   const [sent, setSent] = useState(false);
+  // Honeypot field — only bots fill this in, real users never see it.
+  const [honeypot, setHoneypot] = useState('');
   // True only on first mount when a saved draft was actually restored.
   const [draftRestored, setDraftRestored] = useState(
     () => !prefillProduct && Boolean(loadDraft())
@@ -151,6 +153,16 @@ export default function ContactForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    // Honeypot tripped — silently pretend it succeeded so the bot moves on.
+    // We never open the mail client and never save anything.
+    if (honeypot) {
+      setSent(true);
+      clearDraft();
+      setDraftRestored(false);
+      return;
+    }
+
     if (!validateAll()) return;
 
     // Build mailto link with prefilled subject and body.
@@ -254,6 +266,22 @@ export default function ContactForm() {
         noValidate
         className="space-y-5 rounded-2xl bg-white p-6 shadow-sm sm:p-8"
       >
+        {/* Honeypot — visually hidden and out of the tab order. Real users
+            never see this field; bots that fill in every input will trip it
+            and we silently drop their submission. */}
+        <div aria-hidden="true" className="absolute left-[-9999px] h-0 overflow-hidden">
+          <label htmlFor="nettsted">Nettside (la stå tom)</label>
+          <input
+            type="text"
+            id="nettsted"
+            name="nettsted"
+            tabIndex={-1}
+            autoComplete="off"
+            value={honeypot}
+            onChange={(event) => setHoneypot(event.target.value)}
+          />
+        </div>
+
         {/* Navn */}
         <div>
           <label htmlFor="navn" className="font-medium text-wax-900">
